@@ -2,6 +2,7 @@ import { render } from "@testing-library/react";
 import { AxiosResponse} from "axios";
 import Axios from 'axios';
 import React, { useEffect, useState } from "react";
+import { Col, Container, Row } from "react-grid-system";
 
 const GrowthMap : Record<number, String> = {
     1: "Hello",
@@ -25,6 +26,7 @@ const PostPage: React.FC = () => {
     const [upvotes, setUpvotes] = useState<number>(1);
     const [downvotes, setDownvotes] = useState<number>(1);
     const [child, setChild] = useState<number>(1);
+    const [postId, setPostId] = useState<number>(2);
 
     const GetPostDetailsSuccess = (response:AxiosResponse) => {
         setpId(response.data.postId);
@@ -33,28 +35,48 @@ const PostPage: React.FC = () => {
         setDownvotes(response.data.downvotes);
         setChild(response.data.child);
     }
-
-    const postId = 2;
-
     const GetPostDetails = async() => {
-        const result = Axios.get("http://localhost:3100/postProfile/" + postId)
-                    .then((response: AxiosResponse) => {return GetPostDetailsSuccess(response)})
-                    //.else((err: any) => {console.log("error")});
+        const result = await Axios.get("http://localhost:3100/postProfile/" + postId.toString())
+                    .then((response) => {console.log("fetched"); return GetPostDetailsSuccess(response)})
+                    //.else((err: any) => {console.log("error"); return "error"});
     }
+
+    const navigateChild = () =>{
+        setPostId(child);
+        //GetPostDetails();
+        console.log(postId);
+    }
+
+    const upvotePost = () => { 
+        setUpvotes(upvotes+1);
+    }
+
+    const downvotePost = () => {
+        setDownvotes(downvotes+1);
+    }
+
+    //<textarea onChange={(text) => setBody(text.target.value)} />
 
     useEffect(() => {
         GetPostDetails();
-    }, []);
+    }, [postId]);
 
     return(
-        <div>
-            <h1> Post Details for Post {pId}</h1>
-            <h2>Body: {body}</h2>
-            <h2>Upvotes: {upvotes}</h2>
-            <h2>Downvotes: {downvotes}</h2>
-            <h2>Child ID: {child}</h2>
-
-        </div>
+        <Container>
+            <Row> Post Details for Post {pId}</Row>
+            <Row> 
+                <Col> Body </Col> <Col> {body} </Col>
+            </Row>
+            <Row>
+                <button color="#841584" onClick = {upvotePost}> Upvote {upvotes}</button>
+            </Row>
+            <Row>
+                <button color = "danger" onClick = {downvotePost}> Downvote {downvotes}</button>
+            </Row>
+            <Row>
+                <button color = "danger" onClick={navigateChild}>Go to Post {child} </button>
+            </Row>
+        </Container>
     )
 
 }
