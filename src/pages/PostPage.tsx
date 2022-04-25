@@ -38,6 +38,8 @@ const PostPage: React.FC = () => {
         setChild(response.data.child);
     }
     const GetPostDetails = async() => {
+        setBody("");
+        setDisabled(false);
         const result = await Axios.get("http://localhost:3100/postProfile/" + postId.toString())
                     .then((response) => {console.log("fetched"); return GetPostDetailsSuccess(response)})
                     //.else((err: any) => {console.log("error"); return "error"});
@@ -75,17 +77,23 @@ const PostPage: React.FC = () => {
             <Row> Post Details for Post {pId}</Row>
             <Row> 
                 <Col> Body </Col> <Col> <textarea disabled = {disabled} onChange={(text) => setBody(text.target.value)} /> </Col>
-                <Col> <button color = "danger" onClick={savePostBody}> Submit Post Text</button></Col>
             </Row>
             <Row>
-                <button color="#841584" onClick = {upvotePost}> Upvote {upvotes}</button>
+                <button color="#841584" disabled = {disabled} onClick = {upvotePost}> Upvote {upvotes}</button>
             </Row>
             <Row>
-                <button color = "danger" onClick = {downvotePost}> Downvote {downvotes}</button>
+                <button color = "danger" disabled = {disabled} onClick = {downvotePost}> Downvote {downvotes}</button>
             </Row>
+
+            <Row>
+                <Col><button color = "danger" disabled = {disabled} onClick={savePostBody}> Submit Post Text</button></Col>
+            </Row>
+            <Row /> <Row />
+
             <Row>
                 <button color = "danger" onClick={navigateChild}>Go to Post {child} </button>
             </Row>
+
         </Container>
     )
 
