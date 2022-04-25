@@ -28,6 +28,8 @@ const PostPage: React.FC = () => {
     const [child, setChild] = useState<number>(1);
     const [postId, setPostId] = useState<number>(2);
 
+    const [disabled, setDisabled] = useState<boolean>(false);
+
     const GetPostDetailsSuccess = (response:AxiosResponse) => {
         setpId(response.data.postId);
         setBody(response.data.body);
@@ -55,6 +57,13 @@ const PostPage: React.FC = () => {
         setDownvotes(downvotes+1);
     }
 
+    const savePostBody = () => {
+        const result = Axios.post("http://localhost:3100/postProfile/" + postId.toString(), {"postId":postId, "body":body, "upvotes": upvotes, "downvotes":downvotes, "child": child} )
+                            .then((response) => {if(response.data) {console.log(response.data);setDisabled(true)}})
+                            //.else()
+        setDisabled(true);
+    }
+
     //<textarea onChange={(text) => setBody(text.target.value)} />
 
     useEffect(() => {
@@ -65,7 +74,8 @@ const PostPage: React.FC = () => {
         <Container>
             <Row> Post Details for Post {pId}</Row>
             <Row> 
-                <Col> Body </Col> <Col> {body} </Col>
+                <Col> Body </Col> <Col> <textarea disabled = {disabled} onChange={(text) => setBody(text.target.value)} /> </Col>
+                <Col> <button color = "danger" onClick={savePostBody}> Submit Post Text</button></Col>
             </Row>
             <Row>
                 <button color="#841584" onClick = {upvotePost}> Upvote {upvotes}</button>
