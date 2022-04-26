@@ -15,7 +15,7 @@ const PostPage: React.FC = () => {
     const [downvotes, setDownvotes] = useState<number>(1);
     const [child, setChild] = useState<number>(1);
     const [postId, setPostId] = useState<number>(1);
-    const [value, setValue] = useState<string>("");
+    //const [value, setValue] = useState<string>("");
 
     const [disabled, setDisabled] = useState<boolean>(false);
 
@@ -35,15 +35,15 @@ const PostPage: React.FC = () => {
         
     }
     const GetPostDetails = async() => {
-        setValue("");
+        //setValue("");
         setBody("");
         setDisabled(false);
 
         const result = await Axios.get("http://localhost:3100/postProfile/" + postId.toString())
                     .then((response) => {console.log("fetched"); return GetPostDetailsSuccess(response)})
                     //.else((err: any) => {console.log("error"); return "error"});
-        setValue(body.toString());
-        console.log("Hello value " + value + " body " + body);
+        //setValue(body.toString());
+        //console.log("Hello value " + value + " body " + body);
     }
 
     const navigateChild = () =>{
@@ -65,11 +65,11 @@ const PostPage: React.FC = () => {
         setDisabled(true);
     }
 
-    const saveText = (text:React.ChangeEvent<HTMLTextAreaElement>) => {
+    /*const saveText = (text:React.ChangeEvent<HTMLTextAreaElement>) => {
         console.log("Text getting saved")
         setBody(text.target.value);
-        setValue(text.target.value);
-    }
+        //setValue(text.target.value);
+    }*/
 
     //<textarea onChange={(text) => setBody(text.target.value)} />
 
@@ -81,7 +81,7 @@ const PostPage: React.FC = () => {
         <Container>
             <Row> Post Details for Post {pId}</Row>
             <Row> 
-                <Col> Body </Col> <Col> <textarea value = {body.toString()} disabled = {disabled} onChange={(text) => saveText(text)} /> </Col>
+                <Col> Body </Col> <Col> <textarea value = {body.toString()} disabled = {disabled} onChange={(text) => setBody(text.target.value)} /> </Col>
             </Row>
             <Row>
                 <button color="#841584" disabled = {disabled} onClick = {upvotePost}> Upvote {upvotes}</button>
