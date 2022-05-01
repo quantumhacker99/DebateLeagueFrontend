@@ -13,7 +13,7 @@ const PostComponent: React.FC = () => {
     }
 
     return (
-        <button color = " blue" onClick={navigatePostPage}>Go to Post 2 </button>
+        <button color = " blue" onClick={navigatePostPage}>Go to Post 1 </button>
     );
 };
 
