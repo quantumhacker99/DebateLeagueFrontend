@@ -41,7 +41,7 @@ jobs:
       with:
         # Required, playbook filepath
         playbook: deb-deploy.yml
-        key: ${{secrets.SSH_PRIVATE_KEY}}
+        key: ${{secrets.SSH_KEY}}
         # Optional, literal inventory file contents
         inventory: |
           [ubuntu18]
