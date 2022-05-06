@@ -1,19 +1,37 @@
 //import {IonButton, IonContent, useIonRouter} from '@ionic/react';
 import React, {useState} from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import { Router } from 'workbox-routing';
 
+type PostProps = {
+    postId:Number,
+    body:string,
+    upvotes:Number,
+    downvotes:Number,
+    parent:Number,
+    child:Number,
+    user:Number,
+    replyUser:Number
+}
 
-const PostComponent: React.FC = () => {
+type LocationState = {
+    postId:number
+}
+
+
+const PostComponent: React.FC<PostProps> = (props:PostProps) => {
 
     const navigate = useNavigate();
 
     const navigatePostPage = () => {
-        navigate("/postProfile");
+        navigate("/postProfile", { state : { postId: props.postId } });
     }
 
+    const pId = props.postId;
+    const body = "Go to Post " + props.postId.toString();
+
     return (
-        <button color = " blue" onClick={navigatePostPage}>Go to Post 1 </button>
+        <button color = " blue" onClick={() => navigatePostPage()}> {body}</button>
     );
 };
 
