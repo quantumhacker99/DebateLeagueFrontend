@@ -26,7 +26,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - name: Building the application
     - run: npm run build
     - name: Build and push docker image
       uses: mr-smithers-excellent/docker-build-push@v4
