@@ -1,0 +1,11 @@
+
+---
+- name: Pull docker image of Calculator
+  hosts: all
+ 
+  tasks:
+    - name: Pull docker image
+      docker_image:
+        name: matehate/debateleaguefrontend
+        source: pull
+        force_source: yes
