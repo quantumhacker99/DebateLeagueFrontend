@@ -25,6 +25,8 @@ jobs:
     - run: npm install
     - run: npm install react-grid-system
     - run: npm run build
+    - env:
+        CI: false
     - name: Build and push docker image
       uses: mr-smithers-excellent/docker-build-push@v4
       with:
