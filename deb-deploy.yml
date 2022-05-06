@@ -6,6 +6,6 @@
   tasks:
     - name: Pull docker image
       docker_image:
-        name: matehate/debateleaguebackend
+        name: matehate/debateleaguefrontend
         source: pull
         force_source: yes
