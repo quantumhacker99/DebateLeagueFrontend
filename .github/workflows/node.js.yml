@@ -27,7 +27,6 @@ jobs:
         cache: 'npm'
     - run: npm install
     - run: npm install react-grid-system
-    - run: npm i --save-dev @types/js-cookie
     - run: npm run build
     - name: Build and push docker image
       uses: mr-smithers-excellent/docker-build-push@v4
