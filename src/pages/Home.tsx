@@ -3,7 +3,6 @@ import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router";
 import PostComponent from "../components/PostComponent";
-import Cookies from 'js-cookie';
 
 type Post = {
     postId:Number,
@@ -20,13 +19,13 @@ type Post = {
 const Home: React.FC = () => {
 
     const [headPosts, setHeadPosts] = useState<Post[]>([]);
-    Cookies.set('userId', '2');
+    localStorage.setItem('userId', '2');
     const navigate = useNavigate();
 
     const createNewPost =  () =>{
         
 
-        const result = Axios.post("http://localhost:3100/createNewPost/" + Cookies.get('userId'))
+        const result = Axios.post("http://localhost:3100/createNewPost/" + localStorage.getItem('userId'))
                                   .then( (response) => {navigate("/postProfile", { state : { postId: response.data.child} })});
                                   //.catch( (err: any) => {console.log("error")});
     }
