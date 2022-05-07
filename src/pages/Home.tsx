@@ -24,8 +24,6 @@ const Home: React.FC = () => {
     const navigate = useNavigate();
 
     const createNewPost =  () =>{
-        
-
         const result = Axios.post("http://localhost:3100/createNewPost/" + Cookies.get('userId'))
                                   .then( (response) => {navigate("/postProfile", { state : { postId: response.data.child} })});
                                   //.catch( (err: any) => {console.log("error")});
@@ -35,6 +33,10 @@ const Home: React.FC = () => {
         const result = await Axios.get("http://localhost:3100/fetchPosts")
                                   .then( (response) => {console.log("fetched");setHeadPosts(response.data)})
                                   .catch( (error) => console.log("err"));
+    }
+
+    const goInbox = () => {
+      navigate("/inbox");
     }
 
     useEffect(() => {
@@ -49,6 +51,7 @@ const Home: React.FC = () => {
               );
             })}
             <button color = " blue" onClick={() => createNewPost()}> Create New Post</button>
+            <button color = " blue" onClick={() => goInbox()}> Your Inbox</button>
         </div>
     )
 

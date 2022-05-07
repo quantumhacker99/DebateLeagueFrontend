@@ -11,14 +11,18 @@ import Cookies from "js-cookie";
 }*/
 
 
+
 const PostPage = () => {
 
     //var Axios = require('axios').default();
 
-    const [currentUser, setCurrentUser] = useState(1);
+    const [currentUser, setCurrentUser] = useState(Number(Cookies.get('userId')));
 
-    const [user, setUser] = useState(Number(Cookies.get('userId')));
-    console.log("I think " + currentUser + " " + user);
+    const [user, setUser] = useState(-1);
+    console.log("User " + user);
+    console.log("Current user " + currentUser);
+    //console.log(" Are they equal?" + Number(currentUser) - Number(user));
+    //console.log("I think " + currentUser + " " + user + " " + currentUser == user);
     const [replyUser,setReplyUser] = useState(1);
 
 
@@ -64,7 +68,7 @@ const PostPage = () => {
             console.log("Post Details " + response.data.postId + " " + response.data.body + " " + 
                         response.data.upvotes+ " " + response.data.downvotes + " " 
                         + response.data.parent + " " + response.data.child + " "
-                        + response.data.user + " " + response.data.replyUser + currentUser);
+                        + response.data.user + " " + response.data.replyUser + " " + currentUser);
         }
         
     }
@@ -102,6 +106,8 @@ const PostPage = () => {
         setDownvotes(downvotes+1);
     }
 
+    const [recipientId, setRecipientId] = useState("");
+
     const savePostBody = () => {
         const result = Axios.post("http://localhost:3100/postProfile/" + postId.toString(), 
                                 {"postId":postId, "body":body, "upvotes": upvotes, "downvotes":downvotes, "child": child} )
@@ -123,6 +129,30 @@ const PostPage = () => {
         setBodyDisabled(true);
     }
 
+    const sendInvite = () => {
+        //setRecipientId("1");
+        console.log(recipientId);
+        const result = Axios.post("http://localhost:3100/inviteUser/" + recipientId.toString() , {
+                                        'topic': "Topic",
+                                        'body':body,
+                                        'sendingId':user,
+                                        'postId':postId
+                                        }
+                        )
+                        .then( (response) => {if(response.data.success) {console.log("Invite sent successfully")} 
+                                              else{ console.log("Invite failed")}}
+                            )
+    }
+
+// type SendInviteDTO{
+//     private String topic;
+//     private String body;
+//     private String sendingId;
+//     private String postId;
+// }
+
+
+
     //const createNewPost = ()
 
     /*const saveText = (text:React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -140,6 +170,8 @@ const PostPage = () => {
     //if current user is not user then body is always disabled. If they are user, then it depends on bodyDisabled. 
 
     //If post has a child already then nobody can reply. If post does not have, and current user is replyUser then yes. 
+
+    
 
     return(
         <Container>
@@ -173,6 +205,19 @@ const PostPage = () => {
             <Row>
                 {child <0 && <button color = "danger" disabled = {currentUser != replyUser} onClick={createReplyPost}> Reply </button>}
             </Row>
+
+            {/* {currentUser == user && */}
+            <Row> 
+                <Col> RecipientID: </Col> <Col><textarea value = {recipientId.toString()}  
+                                        onChange={(text) => setRecipientId(text.target.value)} /> </Col>
+            </Row>
+             {/* } */}
+
+            {/* {currentUser == user && */}
+            <Row>
+                <button color = "danger" onClick={sendInvite}> Send Invite</button>
+            </Row>
+            {/* } */}
 
         </Container>
     )
