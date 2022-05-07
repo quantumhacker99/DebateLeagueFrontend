@@ -4,7 +4,7 @@ import Axios from 'axios';
 import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-grid-system";
 import { useLocation, useNavigate} from "react-router";
-import Cookies from "js-cookie";
+//import Cookies from "js-cookie";
 
 /*interface LocationState {
     from : { postId: number };
@@ -17,7 +17,7 @@ const PostPage = () => {
 
     const [currentUser, setCurrentUser] = useState(1);
 
-    const [user, setUser] = useState(Number(Cookies.get('userId')));
+    const [user, setUser] = useState(Number(localStorage.getItem('userId')));
     console.log("I think " + currentUser + " " + user);
     const [replyUser,setReplyUser] = useState(1);
 
