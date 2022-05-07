@@ -15,10 +15,11 @@ const PostPage = () => {
 
     //var Axios = require('axios').default();
 
-    const [currentUser, setCurrentUser] = useState(1);
-
-    const [user, setUser] = useState(Number(localStorage.getItem('userId')));
-    console.log("I think " + currentUser + " " + user);
+    const [currentUser, setCurrentUser] = useState(Number(localStorage.getItem('userId')));
+    //const [user, setUser] = useState(1);
+    //const [user, setUser] = useState(Number(localStorage.getItem('userId')));
+    const [user, setUser] = useState(-1);
+    console.log("I think " + currentUser + " " + user + currentUser===user);
     const [replyUser,setReplyUser] = useState(1);
 
 
@@ -58,28 +59,39 @@ const PostPage = () => {
             setUser(response.data.user);
             setReplyUser(response.data.replyUser);
 
-            if(response.data.body != ""){
-                setBodyDisabled(true);
-            }
+            setBodyDisabled(currentUser !== response.data.user || response.data.body !== "");
+            setVoteDisabled(currentUser === response.data.user);
+            // if(response.data.body != ""){
+            //     setBodyDisabled(true);
+            // }
             console.log("Post Details " + response.data.postId + " " + response.data.body + " " + 
                         response.data.upvotes+ " " + response.data.downvotes + " " 
                         + response.data.parent + " " + response.data.child + " "
-                        + response.data.user + " " + response.data.replyUser + currentUser);
+                        + response.data.user + " " + response.data.replyUser + " " 
+                        + user + " " + currentUser);
         }
         
     }
     const GetPostDetails = async() => {
         //setValue("");
         setBody("");
-        setBodyDisabled(currentUser != user);
-        setVoteDisabled(currentUser == user);
+        //setBodyDisabled(currentUser != user);
+        //setVoteDisabled(currentUser == user);
         console.log(postId.toString());
+
+        
 
         const result = await Axios.get("http://localhost:3100/postProfile/" + postId.toString())
                     .then((response) => {console.log("fetched"); return GetPostDetailsSuccess(response)})
                     .catch((err) => {console.log("error"); return "error"});
         //setValue(body.toString());
         //console.log("Hello value " + value + " body " + body);
+        if(currentUser === user){
+            console.log("Hurray the user is ", user , " currentUser ", currentUser);
+        }
+        else{
+            console.log("No the user is ", user , " currentUser ", currentUser);
+        }
     }
 
     const navigateParent = () =>{
@@ -149,10 +161,10 @@ const PostPage = () => {
                                         onChange={(text) => setBody(text.target.value)} /> </Col>
             </Row>
             <Row>
-                <button color="#841584" disabled = {currentUser == user} onClick = {upvotePost}> Upvote {upvotes}</button>
+                <button color="#841584" disabled = {currentUser === user} onClick = {upvotePost}> Upvote {upvotes}</button>
             </Row>
             <Row>
-                <button color = "danger" disabled = {currentUser == user} onClick = {downvotePost}> Downvote {downvotes}</button>
+                <button color = "danger" disabled = {currentUser === user} onClick = {downvotePost}> Downvote {downvotes}</button>
             </Row>
 
             <Row>
@@ -171,7 +183,8 @@ const PostPage = () => {
             </Row>
 
             <Row>
-                {child <0 && <button color = "danger" disabled = {currentUser != replyUser} onClick={createReplyPost}> Reply </button>}
+                {child <0 &&  currentUser === replyUser &&
+                <button color = "danger" onClick={createReplyPost}> Reply </button>}
             </Row>
 
         </Container>

@@ -19,7 +19,7 @@ type Post = {
 const Home: React.FC = () => {
 
     const [headPosts, setHeadPosts] = useState<Post[]>([]);
-    localStorage.setItem('userId', '2');
+    localStorage.setItem('userId', '1');
     const navigate = useNavigate();
 
     const createNewPost =  () =>{
