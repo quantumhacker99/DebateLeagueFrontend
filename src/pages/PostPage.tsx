@@ -4,6 +4,7 @@ import Axios from 'axios';
 import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-grid-system";
 import { useNavigate } from "react-router";
+import { Authorize } from "../components/AuthorizeComponent";
 
 
 const PostPage: React.FC = () => {
@@ -66,7 +67,7 @@ const PostPage: React.FC = () => {
         setVoteDisabled(currentUser == user);
         console.log(postId.toString());
 
-        const result = await Axios.get("http://localhost:3100/postProfile/" + postId.toString())
+        const result = await Authorize.getResource("http://localhost:3100/postProfile/" + postId.toString())
                     .then((response) => {console.log("fetched"); return GetPostDetailsSuccess(response)})
                     .catch((err: any) => {console.log("error"); return "error"});
         //setValue(body.toString());
@@ -94,7 +95,7 @@ const PostPage: React.FC = () => {
     }
 
     const savePostBody = () => {
-        const result = Axios.post("http://localhost:3100/postProfile/" + postId.toString(), 
+        const result = Authorize.postResource("http://localhost:3100/postProfile/" + postId.toString(), 
                                 {"postId":postId, "body":body, "upvotes": upvotes, "downvotes":downvotes, "child": child} )
                             .then((response) => {if(response.data.success) {console.log(response.data);setBodyDisabled(true)}})
                             //.else()
@@ -103,7 +104,7 @@ const PostPage: React.FC = () => {
 
     const createReplyPost = () => {
         console.log("Reply user is " + replyUser.toString());
-        const result = Axios.post("http://localhost:3100/createPost/" + postId.toString())//, replyUser.toString())
+        const result = Authorize.postResource("http://localhost:3100/createPost/" + postId.toString(), "")//, replyUser.toString())
                             .then((response) => {if(response.data.success) 
                                         {console.log(response.data); 
                                         setUser(response.data.userId); setReplyUser(response.data.replyId);

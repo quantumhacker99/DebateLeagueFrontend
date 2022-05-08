@@ -4,6 +4,7 @@ import Axios from 'axios';
 import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-grid-system";
 import { useLocation, useNavigate} from "react-router";
+import { Authorize } from "../components/AuthorizeComponent";
 //import Cookies from "js-cookie";
 
 /*interface LocationState {
@@ -81,7 +82,7 @@ const PostPage = () => {
 
         
 
-        const result = await Axios.get("http://localhost:3100/postProfile/" + postId.toString())
+        const result = await Authorize.getResource("http://localhost:3100/postProfile/" + postId.toString())
                     .then((response) => {console.log("fetched"); return GetPostDetailsSuccess(response)})
                     .catch((err) => {console.log("error"); return "error"});
         //setValue(body.toString());
@@ -115,7 +116,7 @@ const PostPage = () => {
     }
 
     const savePostBody = () => {
-        const result = Axios.post("http://localhost:3100/postProfile/" + postId.toString(), 
+        const result = Authorize.postResource("http://localhost:3100/postProfile/" + postId.toString(), 
                                 {"postId":postId, "body":body, "upvotes": upvotes, "downvotes":downvotes, "child": child} )
                             .then((response) => {if(response.data.success) {console.log(response.data);setBodyDisabled(true)}})
                             //.else()
@@ -124,7 +125,7 @@ const PostPage = () => {
 
     const createReplyPost = () => {
         console.log("Reply user is " + replyUser.toString());
-        const result = Axios.post("http://localhost:3100/createPost/" + postId.toString())//, replyUser.toString())
+        const result = Authorize.postResource("http://localhost:3100/createPost/" + postId.toString())//, replyUser.toString())
                             .then((response) => {if(response.data.success) 
                                         {console.log(response.data); 
                                         setUser(response.data.userId); setReplyUser(response.data.replyId);
