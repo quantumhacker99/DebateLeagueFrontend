@@ -12,7 +12,7 @@ import { Authorize } from "../components/AuthorizeComponent";
 }*/
 
 
-const PostPage = () => {
+const PostLage = () => {
 
     //var Axios = require('axios').default();
 
@@ -20,8 +20,8 @@ const PostPage = () => {
     //const [user, setUser] = useState(1);
     //const [user, setUser] = useState(Number(localStorage.getItem('userId')));
     const [user, setUser] = useState(-1);
-    console.log("I think " + currentUser + " " + user + currentUser===user);
-    const [replyUser,setReplyUser] = useState(1);
+    //console.log("I think " + currentUser + " " + user + currentUser===user);
+    const [replyUser,setReplyUser] = useState(-1);
 
 
     const [pId, setpId] = useState(0);
@@ -44,6 +44,8 @@ const PostPage = () => {
 
     const navigate = useNavigate();
 
+    const [recipientId, setRecipientId] = useState("");
+
     const GetPostDetailsSuccess = (response) => {
         console.log(response.data);
         if(!response.data.isNull){
@@ -59,6 +61,8 @@ const PostPage = () => {
 
             setUser(response.data.user);
             setReplyUser(response.data.replyUser);
+
+            setRecipientId(response.data.replyUser);
 
             setBodyDisabled(currentUser !== response.data.user || response.data.body !== "");
             setVoteDisabled(currentUser === response.data.user);
@@ -136,6 +140,21 @@ const PostPage = () => {
         setBodyDisabled(true);
     }
 
+    const sendInvite = () => {
+        //setRecipientId("1");
+        console.log(recipientId);
+        const result = Authorize.postResource("http://localhost:3100/inviteUser/" + recipientId.toString() , {
+                                        'topic': "Topic",
+                                        'body':body,
+                                        'sendingId':user,
+                                        'postId':postId
+                                        }
+                        )
+                        .then( (response) => {if(response.data.success) {console.log("Invite sent successfully")} 
+                                              else{ console.log("Invite failed")}}
+                            )
+    }
+
     //const createNewPost = ()
 
     /*const saveText = (text:React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -168,10 +187,14 @@ const PostPage = () => {
                 <button color = "danger" disabled = {currentUser === user} onClick = {downvotePost}> Downvote {downvotes}</button>
             </Row>
 
+            {
+            currentUser == user &&
+
             <Row>
                 <Col><button color = "danger" disabled = {bodyDisabled} 
                                     onClick={savePostBody}> Submit Post Text</button></Col>
             </Row>
+            }
 
             <Row>
                 <Col>{parent > 0?
@@ -188,9 +211,22 @@ const PostPage = () => {
                 <button color = "danger" onClick={createReplyPost}> Reply </button>}
             </Row>
 
+            {currentUser == user && replyUser == -1 &&
+            <Row> 
+                <Col> RecipientID: </Col> <Col><textarea value = {recipientId != -1? recipientId.toString(): ""}  
+                                        onChange={(text) => setRecipientId(text.target.value)} /> </Col>
+            </Row>
+             }
+
+            {currentUser == user && replyUser == -1 &&
+            <Row>
+                <button color = "danger" onClick={sendInvite}> Send Invite</button>
+            </Row>
+            }
+
         </Container>
     )
 
 }
 
-export default PostPage;
+export default PostLage;

@@ -11,25 +11,29 @@ const PostPage: React.FC = () => {
 
     //var Axios = require('axios').default();
 
-    const [currentUser, setCurrentUser] = useState<number>(3);
+    const [currentUser, setCurrentUser] = useState(Number(localStorage.getItem('userId')));
+    //const [user, setUser] = useState(1);
+    //const [user, setUser] = useState(Number(localStorage.getItem('userId')));
+    const [user, setUser] = useState(-1);
+    //console.log("I think " + currentUser + " " + user + currentUser===user);
+    const [replyUser,setReplyUser] = useState(-1);
 
-    const [user, setUser] = useState<number>(1);
-    const [replyUser,setReplyUser] = useState<number>(2);
 
-    const [pId, setpId] = useState<number>(0);
-    const [body, setBody] = useState<String>("");
-    const [upvotes, setUpvotes] = useState<number>(1);
-    const [downvotes, setDownvotes] = useState<number>(1);
+    const [pId, setpId] = useState(0);
+    const [body, setBody] = useState("");
+    const [upvotes, setUpvotes] = useState(1);
+    const [downvotes, setDownvotes] = useState(1);
 
-    const [parent,setParent] = useState<number>(-1);
-    const [child, setChild] = useState<number>(-1);
-
-    const [postId, setPostId] = useState<number>(1);
+    const [parent,setParent] = useState(-1);
+    const [child, setChild] = useState(-1);
+    const [postId, setPostId] = useState(-1);
     //const [value, setValue] = useState<string>("");
 
     const [bodyDisabled, setBodyDisabled] = useState<boolean>(false);
     const [voteDisabled, setVoteDisabled] = useState<boolean>(false);
     const [replyDisabled, setReplyDisabled] = useState<boolean>(false);
+
+    const [recipientId, setRecipientId] = useState("");
 
     const navigate = useNavigate();
 
@@ -49,6 +53,8 @@ const PostPage: React.FC = () => {
 
             setUser(response.data.user);
             setReplyUser(response.data.replyUser);
+
+            setRecipientId(response.data.replyUser);
 
             if(response.data.body != ""){
                 setBodyDisabled(true);
@@ -115,6 +121,21 @@ const PostPage: React.FC = () => {
         setBodyDisabled(true);
     }
 
+    const sendInvite = () => {
+        //setRecipientId("1");
+        console.log(recipientId);
+        const result = Authorize.postResource("http://localhost:3100/inviteUser/" + recipientId.toString() , {
+                                        'topic': "Topic",
+                                        'body':body,
+                                        'sendingId':user,
+                                        'postId':postId
+                                        }
+                        )
+                        .then( (response) => {if(response.data.success) {console.log("Invite sent successfully")} 
+                                              else{ console.log("Invite failed")}}
+                            )
+    }
+
     /*const saveText = (text:React.ChangeEvent<HTMLTextAreaElement>) => {
         console.log("Text getting saved")
         setBody(text.target.value);
@@ -163,6 +184,19 @@ const PostPage: React.FC = () => {
             <Row>
                 {child <0 && <button color = "danger" disabled = {currentUser != replyUser} onClick={createReplyPost}> Reply </button>}
             </Row>
+
+            {currentUser == user && replyUser == -1 &&
+            <Row> 
+                <Col> RecipientID: </Col> <Col><textarea value = {recipientId.toString()}  
+                                        onChange={(text) => setRecipientId(text.target.value)} /> </Col>
+            </Row>
+             }
+
+            {currentUser == user && replyUser == -1 &&
+            <Row>
+                <button color = "danger" onClick={sendInvite}> Send Invite</button>
+            </Row>
+            }
 
         </Container>
     )
