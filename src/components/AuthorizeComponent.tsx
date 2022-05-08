@@ -3,10 +3,6 @@ import React from 'react';
 
 export class Authorize {
 
-  static getUserId(){
-    return localStorage.getItem('userId');
-  }
-
 
   static getHeaders(){
     if (localStorage.getItem('userId') && localStorage.getItem('token')) {

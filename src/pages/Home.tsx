@@ -37,10 +37,6 @@ const Home: React.FC = () => {
                                   .catch( (error) => console.log("err"));
     }
 
-    const goInbox = () => {
-      navigate("/inbox");
-    }
-
     const logoutButton = async() =>{
       Authorize.logout();
     }
@@ -58,7 +54,6 @@ const Home: React.FC = () => {
             })}
             <button color = " blue" onClick={() => createNewPost()}> Create New Post</button>
             <button color = "blue" onClick = {() => logoutButton()}> Logout </button>
-            <button color = " blue" onClick={() => goInbox()}> Your Inbox</button>
         </div>
     )
 
