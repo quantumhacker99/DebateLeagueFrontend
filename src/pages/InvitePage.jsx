@@ -116,9 +116,9 @@ const InvitePage = () => {
     }
 
     const approveRequest = async() =>{
-        const result = await Authorize.postResource("http://localhost:3100/confirmInvite/" + inviteId.toString(), {
-                                                        'approved':'true'
-                                                    })
+        var response = {"approved":"true"};
+        console.log(response.approved);
+        const result = await Authorize.postResource("http://localhost:3100/confirmInvite/" + inviteId.toString(),response)
                                   .then( (response) => {if(response.data.success){console.log(response.data.success)}})
                                   //.catch()
         
@@ -217,11 +217,9 @@ const InvitePage = () => {
                     <button color = "danger" onClick={navigateParent}>Go to Previous Post {parent} </button>
                     : <button color = "danger" onClick = {goHome}> Back to Home </button>}</Col>
             </Row>
-
             <Row>
                 {child > 0 && <button color = "danger" onClick={navigateChild}>Go to Child Post {child} </button>}
             </Row>
-
             <Row>
                 {child <0 && <button color = "danger" disabled = {currentUser != replyUser} onClick={createReplyPost}> Reply </button>}
             </Row> */}
