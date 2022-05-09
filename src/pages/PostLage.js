@@ -108,14 +108,23 @@ const PostPage = () => {
     }
     
     const goHome = () =>{
+        const result = Authorize.postResource("http://localhost:3100/postProfile/" + postId.toString(), 
+                                {"postId":postId, "body":body, "upvotes": upvotes, "downvotes":downvotes, "child": child} )
+                            .then((response) => {if(response.data.success) {console.log(response.data);setBodyDisabled(true)}})
         navigate("/home");
     }
 
     const upvotePost = () => { 
+        const result = Authorize.postResource("http://localhost:3100/postProfile/" + postId.toString(), 
+                                {"postId":postId, "body":body, "upvotes": upvotes, "downvotes":downvotes, "child": child} )
+                            .then((response) => {if(response.data.success) {console.log(response.data);setBodyDisabled(true)}})
         setUpvotes(upvotes+1);
     }
 
     const downvotePost = () => {
+        const result = Authorize.postResource("http://localhost:3100/postProfile/" + postId.toString(), 
+                                {"postId":postId, "body":body, "upvotes": upvotes, "downvotes":downvotes, "child": child} )
+                            .then((response) => {if(response.data.success) {console.log(response.data);setBodyDisabled(true)}})
         setDownvotes(downvotes+1);
     }
 
