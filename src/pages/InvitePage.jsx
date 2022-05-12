@@ -1,9 +1,9 @@
 import { render } from "@testing-library/react";
-import { AxiosResponse} from "axios";
+import { AxiosResponse } from "axios";
 import Axios from 'axios';
 import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-grid-system";
-import { useLocation, useNavigate} from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { Authorize } from "../components/AuthorizeComponent";
 
 /*interface LocationState {
@@ -38,10 +38,10 @@ const InvitePage = () => {
     const [recipientId, setRecipientId] = useState(-1);
     const [receivedFrom, setReceivedFrom] = useState(-1);
     const [postId, setPostId] = useState(-1);
-    
+
     const [disabled, setDisabled] = useState(false);
 
-    
+
     //const [value, setValue] = useState<string>("");
 
     // const [bodyDisabled, setBodyDisabled] = useState(false);
@@ -52,14 +52,14 @@ const InvitePage = () => {
 
     const GetInviteDetailsSuccess = (response) => {
         console.log(response.data);
-        if(!response.data.isNull){
+        if (!response.data.isNull) {
 
             setInviteId(response.data.invitationID);
             setBody(response.data.body);
             setReceivedFrom(response.data.receivedFrom);
             setRecipientId(response.data.recipientId);
             setPostId(response.data.postId);
-            
+
             // setpId(response.data.postId);
             // setBody(response.data.body);
 
@@ -80,9 +80,9 @@ const InvitePage = () => {
             //             + response.data.parent + " " + response.data.child + " "
             //             + response.data.user + " " + response.data.replyUser + currentUser);
         }
-        
+
     }
-    const GetInviteDetails = async() => {
+    const GetInviteDetails = async () => {
         //setValue("");
         // setBody("");
         // setBodyDisabled(currentUser != user);
@@ -93,8 +93,8 @@ const InvitePage = () => {
         console.log("Invite ID is " + inviteId);
 
         const result = await Authorize.getResource("http://localhost:3100/invite/" + state.invitationId.toString())
-                    .then((response) => {console.log("fetched"); return GetInviteDetailsSuccess(response)})
-                    .catch((err) => {console.log("error"); return "error"});
+            .then((response) => { console.log("fetched"); return GetInviteDetailsSuccess(response) })
+            .catch((err) => { console.log("error"); return "error" });
         //setValue(body.toString());
         //console.log("Hello value " + value + " body " + body);
     }
@@ -107,31 +107,31 @@ const InvitePage = () => {
     //     setPostId(child);
     // }
 
-    const navigatePost = () =>{
-        navigate("/postProfile", { state : { postId: postId} });
+    const navigatePost = () => {
+        navigate("/postProfile", { state: { postId: postId } });
     }
-    
-    const goInbox = () =>{
+
+    const goInbox = () => {
         navigate("/inbox");
     }
 
-    const approveRequest = async() =>{
-        var response = {"approved":"true"};
+    const approveRequest = async () => {
+        var response = { "approved": "true" };
         console.log(response.approved);
-        const result = await Authorize.postResource("http://localhost:3100/confirmInvite/" + inviteId.toString(),response)
-                                  .then( (response) => {if(response.data.success){console.log(response.data.success)}})
-                                  //.catch()
-        
+        const result = await Authorize.postResource("http://localhost:3100/confirmInvite/" + inviteId.toString(), response)
+            .then((response) => { if (response.data.success) { console.log(response.data.success) } })
+        //.catch()
+
         setDisabled(true);
     }
 
-    const rejectRequest = async() =>{
+    const rejectRequest = async () => {
         const result = await Authorize.postResource("http://localhost:3100/confirmInvite/" + inviteId.toString(), {
-                                                        'approved':'false'
-                                    })
-                                  .then( (response) => {if(response.data.success){console.log(response.data.success)}})
-                                  //.catch()
-        
+            'approved': 'false'
+        })
+            .then((response) => { if (response.data.success) { console.log(response.data.success) } })
+        //.catch()
+
         setDisabled(true);
     }
 
@@ -182,49 +182,74 @@ const InvitePage = () => {
 
     //If post has a child already then nobody can reply. If post does not have, and current user is replyUser then yes. 
 
-    return(
-        <Container>
-            <Row> Invite Details for Post {postId} by User {receivedFrom}</Row>
-            {/* <Row> 
-                <Col> Body </Col> <Col> <textarea value = {body.toString()} disabled = {bodyDisabled} 
-                                        onChange={(text) => setBody(text.target.value)} /> </Col>
-            </Row> */}
-            <Row> 
-                <Col> Topic </Col> <Col> {topic} </Col>
-            </Row>
-            <Row>
-                <Col> Body </Col> <Col></Col>
-            </Row>
-            <Row>
-                <button color="#841584" onClick = {navigatePost}> Go to Post {postId}</button>
-            </Row>
-            <Row>
-                <button color = "danger" onClick = {goInbox}> Back to Inbox</button>
-            </Row>
+    return (
+        // <Container>
+        //     <Row> Invite Details for Post {postId} by User {receivedFrom}</Row>
+        //     {/* <Row> 
+        //         <Col> Body </Col> <Col> <textarea value = {body.toString()} disabled = {bodyDisabled} 
+        //                                 onChange={(text) => setBody(text.target.value)} /> </Col>
+        //     </Row> */}
+        //     <Row> 
+        //         <Col> Topic </Col> <Col> {topic} </Col>
+        //     </Row>
+        //     <Row>
+        //         <Col> Body </Col> <Col></Col>
+        //     </Row>
+        //     <Row>
+        //         <button color="#841584" onClick = {navigatePost}> Go to Post {postId}</button>
+        //     </Row>
+        //     <Row>
+        //         <button color = "danger" onClick = {goInbox}> Back to Inbox</button>
+        //     </Row>
 
-            <Row>
-                <Col><button color = "danger" disabled = {disabled} 
-                                    onClick={approveRequest}> Approve Invite</button></Col>
-            </Row>
+        //     <Row>
+        //         <Col><button color = "danger" disabled = {disabled} 
+        //                             onClick={approveRequest}> Approve Invite</button></Col>
+        //     </Row>
 
-            <Row>
-                <Col><button color = "danger" disabled = {disabled} 
-                                    onClick={rejectRequest}> Reject Invite</button></Col>
-            </Row>
+        //     <Row>
+        //         <Col><button color = "danger" disabled = {disabled} 
+        //                             onClick={rejectRequest}> Reject Invite</button></Col>
+        //     </Row>
 
-            {/* <Row>
-                <Col>{parent > 0?
-                    <button color = "danger" onClick={navigateParent}>Go to Previous Post {parent} </button>
-                    : <button color = "danger" onClick = {goHome}> Back to Home </button>}</Col>
-            </Row>
-            <Row>
-                {child > 0 && <button color = "danger" onClick={navigateChild}>Go to Child Post {child} </button>}
-            </Row>
-            <Row>
-                {child <0 && <button color = "danger" disabled = {currentUser != replyUser} onClick={createReplyPost}> Reply </button>}
-            </Row> */}
+        //     {/* <Row>
+        //         <Col>{parent > 0?
+        //             <button color = "danger" onClick={navigateParent}>Go to Previous Post {parent} </button>
+        //             : <button color = "danger" onClick = {goHome}> Back to Home </button>}</Col>
+        //     </Row>
+        //     <Row>
+        //         {child > 0 && <button color = "danger" onClick={navigateChild}>Go to Child Post {child} </button>}
+        //     </Row>
+        //     <Row>
+        //         {child <0 && <button color = "danger" disabled = {currentUser != replyUser} onClick={createReplyPost}> Reply </button>}
+        //     </Row> */}
 
-        </Container>
+        // </Container>
+
+        <div className="container">
+            <div className="row">
+                <div className="bg-dark text-secondary px-4 py-5 text-center">
+                    <div className="py-5">
+                        <h1 className="display-5 fw-bold text-white">You have an Invite!!</h1>
+                        <div className="col-lg-6 mx-auto">
+                            <p className="fs-5 mb-4">Invite is for Post {postId} by User {receivedFrom}</p>
+                            {/* <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                                Invite Details for Post {postId} by User {receivedFrom}
+                            </div> */}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="row">
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    <button type="button" class="btn btn-outline-primary" onClick={navigatePost}>Go to Post {postId}</button>
+                    <button type="button" class="btn btn-outline-primary" onClick={goInbox}>Back to Inbox</button>
+                    <button type="button" class="btn btn-outline-success" disabled={disabled} onClick={approveRequest}> Approve Invite</button>
+                    <button type="button" class="btn btn-outline-danger" disabled={disabled} onClick={rejectRequest}> Reject Invite</button>
+                </div>
+            </div>
+        </div>
     )
 
 }
