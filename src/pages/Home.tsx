@@ -39,9 +39,13 @@ const Home: React.FC = () => {
     navigate("/inbox");
   }
 
-    const logoutButton = async() =>{
-      Authorize.logout();
-    }
+  const logoutButton = async () => {
+    Authorize.logout();
+  }
+
+  useEffect(() => {
+    GetHeadPosts();
+  }, []); //[]
 
   return (
     // <div className="container">
@@ -64,8 +68,15 @@ const Home: React.FC = () => {
                 <PostComponent key={index} {...post} />
               );
             })}
-            <button color = " blue" onClick={() => createNewPost()}> Create New Post</button>
-            <button color = "blue" onClick = {() => logoutButton()}> Logout </button>
+          </li> */}
+          <button color=" blue" onClick={() => createNewPost()}> Create New Post</button>
+          {/* <button color=" blue" onClick={() => goInbox()}> Your Inbox</button> */}
+          {/* <li><a href="" className="nav-link px-2 link-dark" onClick={() => createNewPost()}>Create New Post</a></li> */}
+          <li><a href="" className="nav-link px-2 link-dark" onClick={() => goInbox()}>Your Inbox</a></li>
+        </ul>
+
+        <div className="col-md-3 text-end">
+          <button type="button" className="btn btn-outline-primary me-2" onClick={() => logoutButton()}>Logout</button>
         </div>
       </header>
 
