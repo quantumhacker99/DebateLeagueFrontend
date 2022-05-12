@@ -1,33 +1,5 @@
-// import { IonContent, 
-//     IonHeader, 
-//     IonPage, 
-//     IonTitle, 
-//     IonToolbar,
-//     IonInput,
-//     IonButton,
-//     useIonRouter, 
-//     IonGrid,
-//     IonRow,
-//     IonCol,
-//     IonCard,
-//     IonCardContent,
-//     IonMenuButton,
-//     IonButtons,
-//     IonRouterOutlet,
-//     IonCardSubtitle} from '@ionic/react';
 import Axios, { AxiosResponse} from 'axios';
 import React, {useState, useEffect, useContext} from 'react';
-//import { IonReactRouter } from '@ionic/react-router';
-// import MenuContainer from '../components/MenuContainer';
-// import LoginClient from '../httpClient/LoginClient';
-// import "./Login.css"
-// import { RouteComponentProps, useNavigate } from 'react-router';
-// import { BrowserRouter, Link, Switch} from 'react-router-dom';
-// import  Axios, {AxiosResponse } from 'axios';
-// import {AuthContext } from '../contexts/AuthContextProvider';
-// import useAuth from '../hooks/useAuth';
-// import LocalDB from '../storage/LocalDB';
-//import {RouteComponentProps} from 'react-router';
 import { Container, Row } from 'react-grid-system';
 import { useNavigate } from 'react-router';
 
