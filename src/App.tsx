@@ -9,7 +9,9 @@ import Home from './pages/Home';
 import Error from './pages/Error';
 import LoginPage from './pages/LoginPage';
 import { Authorize } from './components/AuthorizeComponent';
-import PostPage from './pages/PostPage';
+import PostPage from './pages/PostLage';
+import Inbox from './pages/Inbox';
+import InvitePage from './pages/InvitePage';
 
 function App() {
   return (
@@ -21,7 +23,13 @@ function App() {
 
         <Route path = "/postProfile" element = {Authorize.checkCredentials()? <PostPage /> : <Navigate to = "/login" />} />
 
+        <Route path = "/inbox" element = {Authorize.checkCredentials()? <Inbox /> : <Navigate to = "/login" />} />
+
         <Route path = "/login" element = {Authorize.checkCredentials()? <Navigate to = "/home" /> : <LoginPage />} />
+
+        <Route path = "/invitePage" element = {Authorize.checkCredentials()? <InvitePage /> : <Navigate to = "/login" />} />
+
+        
         {/* <LoginPage /> : <Navigate to = "/login" />} />  */}
 
         <Route path = "*" element = {<Error />} />
